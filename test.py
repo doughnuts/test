@@ -15,11 +15,11 @@ print(stu1)
 print("---------------------------------")
 
 
-
 import random
 count=0
 for j in range(100):
     points=[random.randint(1,6) for i in range(3)]#列表推导式
+    print(points)
     match points:#模式匹配
         case [6,6,_] | [_,6,6]:
             count+=1
@@ -29,11 +29,49 @@ print(count)
 print("------------------------------")
 
 
-#名片管理系统
 
-class Card:
-    def __init__(self, name, tel, job, addr):
-        self.name = name
-        self.tel = tel
-        self.job = job
-        self.addr = addr
+
+
+
+
+
+
+
+
+#多线程读取json和yaml
+
+import threading
+import json
+import yaml
+import time
+
+class JsonRead(threading.Thread):
+    def __init__(self, file_name, thread_name):
+        super().__init__()
+        self.file_name = file_name
+        self.name = thread_name
+
+    def run(self):
+        time.sleep(1)
+        with open(self.file_name, mode="rt", encoding="utf-8") as f:
+            obj = json.load(f)
+            print(obj)
+
+
+class YamlRead(threading.Thread):
+    def __init__(self, file_name, thread_name):
+        super().__init__()
+        self.file_name = file_name
+        self.name = thread_name
+
+    def run(self):
+        with open(self.file_name, mode="rt", encoding="utf-8") as f:
+            obj = yaml.safe_load(f)
+            print(obj)
+
+j = JsonRead("a.json", "json")
+y = YamlRead("a.yaml", "yaml")
+
+j.start()
+# j.join()
+y.start()
